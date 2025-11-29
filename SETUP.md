@@ -183,7 +183,7 @@ The JWT token:
 
 - Check the [API documentation](./docs/API.md)
 - Review the [architecture documentation](./docs/ARCHITECTURE.md)
-- Open an issue on GitHub
+- [Open an issue on GitHub](https://github.com/Harshul23/5-star/issues)
 
 ## Security Notes
 
