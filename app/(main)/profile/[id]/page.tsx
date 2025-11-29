@@ -47,13 +47,16 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
   const [items, setItems] = useState<Item[]>([]);
   const [activeTab, setActiveTab] = useState<"listings" | "reviews">("listings");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchProfileData = useCallback(async () => {
     try {
+      setError(null);
       const res = await fetch(`/api/users/${id}`);
       
       if (!res.ok) {
-        console.error("Failed to fetch user profile");
+        const errorData = await res.json().catch(() => ({}));
+        setError(errorData.error || "Failed to load profile");
         setLoading(false);
         return;
       }
@@ -62,8 +65,8 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
       setUser(data.user);
       setRatings(data.user.ratingsReceived || []);
       setItems(data.user.items || []);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
+    } catch {
+      setError("Failed to connect to server");
     } finally {
       setLoading(false);
     }
@@ -85,6 +88,19 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <Link href="/home" className="text-blue-600 hover:underline">
+            Go back to home
+          </Link>
+        </div>
       </div>
     );
   }
