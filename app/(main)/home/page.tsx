@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button, Input, Badge, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, Avatar, AvatarFallback } from "@/components/ui";
 import { ItemCardSkeleton } from "@/components/ui/item-card-skeleton";
 import { type Item } from "@/components/item-card";
-import { Search, Zap, Filter, Mic, User, LogOut, Star, MapPin, Share2, ShoppingBag, Package, HelpCircle, Plus } from "lucide-react";
+import { Search, Zap, Filter, Mic, User, LogOut, MapPin, Share2, ShoppingBag, Package, HelpCircle, Plus } from "lucide-react";
 
 interface AuthUser {
   id: string;
@@ -268,17 +268,6 @@ export default function HomePage() {
               </div>
             </Link>
             <div className="flex items-center space-x-4">
-              {currentUser && (
-                <div className="hidden md:flex items-center space-x-2 text-sm text-gray-600">
-                  <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                  <span>4.8</span>
-                  <span className="text-gray-400">•</span>
-                  <span className="flex items-center">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                    120
-                  </span>
-                </div>
-              )}
               {currentUser ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -477,10 +466,10 @@ function MarketplaceItemCard({ item }: { item: Item }) {
         </Link>
         <p className="text-2xl font-bold text-orange-600 mb-2">₹{item.price}</p>
         
-        {/* Location */}
+        {/* Location - Use first seller badge if available, otherwise show "On Campus" */}
         <div className="flex items-center text-gray-500 text-sm mb-4">
           <MapPin className="h-4 w-4 mr-1" />
-          <span>On Campus</span>
+          <span>{item.seller.badges?.[0] || "On Campus"}</span>
         </div>
 
         {/* Actions */}
